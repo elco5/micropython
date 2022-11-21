@@ -1,0 +1,39 @@
+
+CONFIGURE ESP32 
+
+### erase the flash memory
+esptool.py --port COM4 erase_flash
+
+### flash micropython to the board
+esptool.py --chip esp32 --port COM4 write_flash -z 0x1000 esp32-20210902-v1.17.bin
+
+### start rshell
+count@DESKTOP-9N5MIHJ MINGW64 ~/Documents/micropython-env/esp32Config
+$ rshell
+C:\Users\count\Documents\micropython-env\esp32Config>
+
+### connect to the board
+C:\Users\count\Documents\micropython-env\esp32Config> connect serial com4
+Connecting to com4 (buffer-size 512)...
+Trying to connect to REPL  connected
+Retrieving sysname ... esp32
+Testing if sys.stdin.buffer exists ... Y
+Retrieving root directories ... /boot.py/
+Setting time ... Nov 13, 2021 21:11:55
+Evaluating board_name ... pyboard
+Retrieving time epoch ... Jan 01, 2000
+
+### open a repl prompt on the device
+C:\Users\count\Documents\micropython-env\esp32Config> repl
+Entering REPL. Use Control-X to exit.
+>
+MicroPython v1.17 on 2021-09-02; ESP32 module with ESP32
+Type "help()" for more information.
+>>>
+
+### cd into the ESP32 filesystem
+C:\Users\count\Documents\micropython-env\esp32Config>cd /pyboard
+/pyboard>
+
+
+

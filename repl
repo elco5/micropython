@@ -1,0 +1,33 @@
+# https://randomnerdtutorials.com/micropython-interrupts-esp32-esp8266/
+
+from machine import Pin
+from time import sleep_ms
+from time import ticks_ms
+
+LED_PIN = 32
+SWITCH_PIN = 25
+SLEEP_TIME_MS = 1000
+
+
+led = Pin(LED_PIN, Pin.OUT)
+switch = Pin(SWITCH_PIN, Pin.IN, Pin.PULL_UP)
+
+switch_closed = False
+
+
+def handle_interrupt(pin):
+    global switch_closed
+    switch_closed = True
+
+switch.irq(trigger=Pin.IRQ_FALLING,
+           handler=handle_interrupt)
+
+while True:
+    if switch_closed:
+        print('Pulse Detected')
+        print(f'Time: {ticks_ms()}')
+        led.value(1)
+        sleep_ms(SLEEP_TIME_MS)
+        led.value(0)
+        print('Waiting...')
+        switch_closed = False
