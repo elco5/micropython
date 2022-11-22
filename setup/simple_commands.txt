@@ -1,0 +1,28 @@
+$ rshell
+Welcome to rshell. Use the exit command to exit rshell.
+
+No MicroPython boards connected - use the connect command to add one
+
+C:\Users\count\dev\micropython> connect serial com3
+Connecting to com3 (buffer-size 512)...
+Trying to connect to REPL  connected
+Retrieving sysname ... esp32
+Testing if sys.stdin.buffer exists ... Y
+Retrieving root directories ... /blink.py/ /boot.py/ /hello.py/ /test.py/
+Setting time ... Nov 12, 2022 12:07:11
+Evaluating board_name ... pyboard
+Retrieving time epoch ... Jan 01, 2000
+C:\Users\count\dev\micropython> ls -la /pyboard/
+   200 Nov 12 11:53 blink.py
+   139 Jan  1 2000  boot.py
+    16 Nov 12 11:26 hello.py
+     0 Nov 12 11:31 test.py
+C:\Users\count\dev\micropython> repl
+Entering REPL. Use Control-X to exit.
+>
+MicroPython v1.17 on 2021-09-02; ESP32 module with ESP32
+Type "help()" for more information.
+>>>
+>>> import hello
+hello!
+>>>
