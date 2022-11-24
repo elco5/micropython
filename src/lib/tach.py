@@ -1,43 +1,39 @@
 
-''' low level metering of pulses
-keeps rolling average of the period
-of incomming pulses'''
+''' Pulse metering. 
+Keeps the rolling average period of incomming pulses
+Has a binary state (state_hi_speed) reflecting the  
+pulse period with respect to a defined threshold
+'''
+
 
 class Tach:
 
-    def __init__(self, window):
-        '''define time queue and track average'''
-        self.Q = [0] * window
-        self.avg = 0
+    def __init__(self, queue_size):
+        '''define time queue and track average
+        keep speed state'''
+        self.THRESHOLD = 2000       
+        self.hi_speed = False
+        self.q = [5000] * queue_size
+        self.rate = 0
 
+    def set_state(self):
+        self.hi_speed = (self.rate < self.THRESHOLD)
 
-    def pulse(self, millisecond_time):
+    def record(self, millisecond_time):
         ''' add pulse time to queue'''
-        self.Q = [millisecond_time, *self.Q[:-1]]
-
+        self.q.append(millisecond_time)
+        self.q = self.q[1:]
         self.set_rate()
-        
+        self.set_state()
+
     def set_rate(self):
-        
+        ''' update average of times in queue'''
         time_sum = 0
-        
-        for delt in self.Q:
+        for delt in self.q:
             time_sum += delt
+        self.rate = int(time_sum/len(self.q))
 
-        self.avg = int(time_sum/len(self.Q))
+    def show(self):
+        ''' print the Tach instance dictionary'''
+        print(self.__dict__)
 
-        
-# from tach import Tach
-t = Tach(3)
-print(t.__dict__)
-t.pulse(55)
-print(t.__dict__)
-t.pulse(66)
-print(t.__dict__)
-t.pulse(77)
-print(t.__dict__)
-t.pulse(88)
-print(t.__dict__)
-rate = t.pulse(99)
-print(t.__dict__)
-print(rate)
