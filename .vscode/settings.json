@@ -1,3 +1,24 @@
 {
-    "python.analysis.typeCheckingMode": "off"
+    "python.analysis.typeCheckingMode": "off",
+    "python.linting.enabled": true,
+    "python.jediEnabled": false,
+    "python.autoComplete.extraPaths": [
+        ".micropy\\BradenM-micropy-stubs-ebac1d3\\frozen",
+        ".micropy\\BradenM-micropy-stubs-4f5a52a\\frozen",
+        ".micropy\\BradenM-micropy-stubs-ebac1d3\\stubs",
+        ".micropy\\micropython"
+    ],
+    "python.autoComplete.typeshedPaths": [
+        ".micropy\\BradenM-micropy-stubs-ebac1d3\\frozen",
+        ".micropy\\BradenM-micropy-stubs-4f5a52a\\frozen",
+        ".micropy\\BradenM-micropy-stubs-ebac1d3\\stubs",
+        ".micropy\\micropython"
+    ],
+    "python.analysis.typeshedPaths": [
+        ".micropy\\BradenM-micropy-stubs-ebac1d3\\frozen",
+        ".micropy\\BradenM-micropy-stubs-4f5a52a\\frozen",
+        ".micropy\\BradenM-micropy-stubs-ebac1d3\\stubs",
+        ".micropy\\micropython"
+    ],
+    "python.linting.pylintEnabled": true
 }
