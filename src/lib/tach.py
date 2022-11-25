@@ -11,7 +11,7 @@ class Tach:
     def __init__(self, queue_size):
         '''define time queue and track average
         keep speed state'''
-        self.THRESHOLD = 2000       
+        self.THRESHOLD = 2000
         self.hi_speed = False
         self.q = [5000] * queue_size
         self.rate = 0
@@ -36,4 +36,3 @@ class Tach:
     def show(self):
         ''' print the Tach instance dictionary'''
         print(self.__dict__)
-

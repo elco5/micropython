@@ -20,5 +20,5 @@
         ".micropy\\BradenM-micropy-stubs-ebac1d3\\stubs",
         ".micropy\\micropython"
     ],
-    "python.linting.pylintEnabled": true
+    "python.linting.pylintEnabled": false
 }
