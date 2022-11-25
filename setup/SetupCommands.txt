@@ -23,6 +23,7 @@ pnputil /enum-devices /connected | findstr COM
 
 erase existing flash memory on device:
 esptool.py --port com4 erase_flash - may need to press BOOT button on ESP32
+esptool.py -p com3 erase_flash
 
 upload micropython binary to device:
 from the directory where the micropython binary is stored, run:
@@ -68,55 +69,26 @@ Welcome to rshell. Use the exit command to exit rshell.
 
 No MicroPython boards connected - use the connect command to add one
 
-C:\Users\count\Documents\Micropython\BoardSetup> connect serial com4
-Connecting to com4 (buffer-size 512)...
+C:\Users\count\dev\micropython> connect serial com3
+Connecting to com3 (buffer-size 512)...
 Trying to connect to REPL  connected
 Retrieving sysname ... esp32
 Testing if sys.stdin.buffer exists ... Y
-Retrieving root directories ... /boot.py/
-Setting time ... Nov 06, 2021 13:45:34
+Retrieving root directories ... /blink.py/ /boot.py/ /hello.py/ /test.py/
+Setting time ... Nov 12, 2022 12:07:11
 Evaluating board_name ... pyboard
 Retrieving time epoch ... Jan 01, 2000
-C:\Users\count\Documents\Micropython\BoardSetup> cp main.py /pyboard
-Copying 'C:\Users\count\Documents\Micropython\BoardSetup/main.py' to '/pyboard/main.py' ...
-C:\Users\count\Documents\Micropython\BoardSetup> repl
+C:\Users\count\dev\micropython> ls -la /pyboard/
+   200 Nov 12 11:53 blink.py
+   139 Jan  1 2000  boot.py
+    16 Nov 12 11:26 hello.py
+     0 Nov 12 11:31 test.py
+C:\Users\count\dev\micropython> repl
 Entering REPL. Use Control-X to exit.
 >
 MicroPython v1.17 on 2021-09-02; ESP32 module with ESP32
 Type "help()" for more information.
->>> ets Jun  8 2016 00:22:57
-
-rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
-configsip: 0, SPIWP:0xee
-clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
-mode:DIO, clock div:2
-load:0x3fff0030,len:5656
-load:0x40078000,len:12696
-load:0x40080400,len:4292
-entry 0x400806b0
-connecting to network...
-network config: ('192.168.1.134', '255.255.255.0', '192.168.1.1', '192.168.1.1')
-WebREPL is not configured, run 'import webrepl_setup'
-MicroPython v1.17 on 2021-09-02; ESP32 module with ESP32
-Type "help()" for more information.
 >>>
-
-#######################
-
-C:\Users\count\Documents\Micropython_old> connect serial com4
-Connecting to com4 (buffer-size 512)...
-Trying to connect to REPL  connected
-Retrieving sysname ... esp32
-Testing if sys.stdin.buffer exists ... Y
-Retrieving root directories ... /boot.py/ /main.py/ /onboardScripts/ /webrepl_cfg.py/
-Setting time ... Nov 06, 2021 16:15:49
-Evaluating board_name ... pyboard
-Retrieving time epoch ... Jan 01, 2000
-C:\Users\count\Documents\Micropython_old> rsync onboardScripts /pyboard/onboardScripts
-Adding /pyboard/onboardScripts/helloworld.py
-C:\Users\count\Documents\Micropython_old> ls -l /pyboard
-   683 Dec 31 1999  boot.py
-   570 Nov  6 13:46 main.py
-     0 Dec 31 1999  onboardScripts/
-    16 Dec 31 1999  webrepl_cfg.py
-C:\Users\count\Documents\Micropython_old>
+>>> import hello
+hello!
+>>>

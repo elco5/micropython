@@ -6,6 +6,7 @@ from time import ticks_ms
 from time import ticks_diff
 
 from lib import tach
+from lib import pulser
 
 LED_PIN = 32
 SWITCH_PIN = 25
@@ -15,6 +16,7 @@ real_speed_low = True
 led = Pin(LED_PIN, Pin.OUT)
 switch = Pin(SWITCH_PIN, Pin.IN, Pin.PULL_UP)
 tach = tach.Tach(3)
+pulser = pulser.Pulser()
 
 verbose = True
 
@@ -48,8 +50,6 @@ while True:
         sleep_ms(SLEEP_TIME_MS)
         led.value(0)
         
-
-
         if verbose: tach.show()
         print('Waiting...')
 
@@ -58,8 +58,10 @@ while True:
         # print('loop_time', ticks_diff(loop_time_end, loop_time_begin))
 
     if not tach.hi_speed:
-        # pulser.pass_pulse()
+        pulser.pass_pulse()
         pass # pass the pulse
     else:
         # high speed state == True
         pass # 16 mph pulse 
+
+    
