@@ -15,34 +15,32 @@ class Pulser:
 
         self.pin = Pin(PULSER_PIN, Pin.OUT)
 
-        # self.tim1 = Pulser.tim1.init(period=5000, mode=Timer.PERIODIC,
-        #     callback=lambda t:print("Welcome to Microcontrollerslab"))
+  
+    def pin_off(self,t):
+        self.pin.value(0)
+
+
+    def pin_on(self,t):
+        '''callack to turn pin on for 100 ms'''
+        self.pin.value(1)
+        Pulser.tim3.init(period=100, mode=Timer.ONE_SHOT, callback=self.pin_off)
+
 
     def pass_pulse(self):
-
+        '''non - callack to turn pin on for 100 ms'''
         self.pin.value(1)
-        Pulser.tim3.init(period=100, mode=Timer.ONE_SHOT, callback=self.pulser_off)
+        Pulser.tim3.init(period=100, mode=Timer.ONE_SHOT, callback=self.pin_off)
         print('pulse passed')
 
-    def hack_speed(self):
-        self.start_periodic()       
-
-
-    def pulser_off(self,t):
-        self.pin.value(0)
-        # print('pin off')
-
-    def pulser_on(self,t):
-        self.pin.value(1)
-        Pulser.tim3.init(period=100, mode=Timer.ONE_SHOT, callback=self.pulser_off)
-        # print('pin on')
 
     def start_periodic(self):
-        Pulser.tim2.init(period=1000, mode=Timer.PERIODIC, callback=self.pulser_on)
+        Pulser.tim2.init(period=1500, mode=Timer.PERIODIC, callback=self.pin_on)
         print('pulser started')
 
-    def stop(self):
+
+    def stop_periodic(self):
         Pulser.tim2.deinit()
+        self.pin.value(0)
 
 '''
 >>> import pulser as p

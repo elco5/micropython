@@ -2,48 +2,70 @@
 
 from machine import Pin
 from time import sleep_ms
-from time import ticks_ms
-from time import ticks_diff
 
 from lib import tach
 from lib import pulser
 from lib import reed_switch
+from lib import state_machine
 
 LED_PIN = 32
+STATE_LED_PIN = 5
+PULSER_PIN = 2
 SWITCH_PIN = 25
 SLEEP_TIME_MS = 300
 
 led = Pin(LED_PIN, Pin.OUT)
+state_led = Pin(STATE_LED_PIN, Pin.OUT)
+pulser = pulser.Pulser(PULSER_PIN=PULSER_PIN)
+reed_switch = reed_switch.ReedSwitch(SWITCH_PIN=SWITCH_PIN)
+
 tach = tach.Tach()
-pulser = pulser.Pulser(PULSER_PIN=2)
-reed_switch = reed_switch.ReedSwitch(SWITCH_PIN)
+# state_machine = state_machine.StateMachine()
 
-
-prev_pulse = ticks_ms()
+hack_mode = False
 
 
 verbose = True
 while True:
-    
-    if reed_switch.closed:
-    # do things each switch closure
-        # loop_time_begin = ticks_ms()
-        # time critical tasks... 
-        led.value(1)
-        this_pulse = ticks_ms()
-        period = ticks_diff(this_pulse, prev_pulse)
-        prev_pulse = ticks_ms()
-        # end time critcal tasks...
 
-        print('Pulse Detected!')
-        tach.record(period)
-        sleep_ms(SLEEP_TIME_MS)
-        led.value(0)
+    if reed_switch.closed:
         
+        # loop_time_begin = ticks_ms()
+        # do things each switch closure
+        led.value(1)
+        tach.tic()
+
+        '''pass pulse here if in passing mode '''
+        if not hack_mode: pulser.pass_pulse()
+        
+        sleep_ms(SLEEP_TIME_MS)
+        reed_switch.reset()
+        led.value(0)
         if verbose: tach.show()
 
 
-        reed_switch.reset()
+        '''state transitions'''
+        
+
+    if not hack_mode and tach.hi_speed:
+        # transition from pass to hack
+        hack_mode = tach.hi_speed
+        pulser.start_periodic()
+        
+        state_led.value(1)
+        print('we hackin!')
+
+
+    if hack_mode and not tach.hi_speed:
+        # transition from hack to pass
+        hack_mode = tach.hi_speed
+        pulser.stop_periodic()
+
+        state_led.value(hack_mode)
+        print('passin...')
+
+    sleep_ms(100)
+
         # loop_time_end = ticks_ms()
         # print('loop_time', ticks_diff(loop_time_end, loop_time_begin))
 
@@ -52,6 +74,4 @@ while True:
     #     pass # pass the pulse
     # else:
     #     # high speed state == True
-    #     pass # 16 mph pulse 
-
-    
+    #     pass # 16 mph pulse

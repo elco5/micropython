@@ -1,7 +1,10 @@
 from machine import Pin
 from machine import Timer
+
 # https://docs.micropython.org/en/latest/reference/isr_rules.html#isr-rules
 # https://techtutorialsx.com/2017/10/07/esp32-micropython-timer-interrupts/
+
+
 class ReedSwitch:
 
 
@@ -15,7 +18,7 @@ class ReedSwitch:
 
         self.closed = False
 
-        self.debounce_timeout = False
+
     
     def handle_interrupt(self, pin):
         
