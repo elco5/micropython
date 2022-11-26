@@ -1,18 +1,11 @@
 Helpful cmd actions
 
-create new file:
-echo pathNewFile.txt
-add text to new file:
-echo new text > pathNewOrExistingFile.txt
-append text to file:
-echo appended text >> existingFile.txt
-
 setting up the board to run micropython:
 https://mitjafelicijan.com/esp8266-and-micropython-guide.html
-
 https://randomnerdtutorials.com/micropython-esp32-esp8266-vs-code-pymakr/
 
 get micropython binary:
+https://micropython.org/download/esp32/
 https://micropython.org/resources/firmware/esp32-20210902-v1.17.bin
 
 install esptool:
@@ -36,12 +29,12 @@ pip install rshell
 run rshell:
 rshell -p com4
 
-list files on pyboard:
-ls /pyboard
-
 connect to board over seral port:
 connect serial COM4
 rshell connect serial com4
+
+list files on pyboard:
+ls /pyboard
 
 using webREPL: (boot.py contents below)
 # This file is executed on every boot (including wake-boot from deepsleep)
@@ -92,3 +85,8 @@ Type "help()" for more information.
 >>> import hello
 hello!
 >>>
+
+micropy-cli setup
+Pylint extension in vs code breaks micropy linting - turn it off
+
+https://github.com/lemariva

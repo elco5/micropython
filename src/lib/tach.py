@@ -8,13 +8,14 @@ pulse period with respect to a defined threshold
 
 class Tach:
 
-    def __init__(self, queue_size):
+    def __init__(self, queue_size = 3):
         '''define time queue and track average
         keep speed state'''
-        self.THRESHOLD = 2000
-        self.hi_speed = False
         self.q = [5000] * queue_size
         self.rate = 0
+        # time deltas below this value trigger hi speed state 
+        self.THRESHOLD = 2000 
+        self.hi_speed = False
 
     def set_state(self):
         self.hi_speed = (self.rate < self.THRESHOLD)
