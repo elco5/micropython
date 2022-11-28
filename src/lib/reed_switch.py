@@ -9,9 +9,9 @@ class ReedSwitch:
 
 
 
-    def __init__(self, SWITCH_PIN):
+    def __init__(self, SENSOR_PIN):
         
-        self.switch = Pin(SWITCH_PIN, Pin.IN, Pin.PULL_UP)
+        self.switch = Pin(SENSOR_PIN, Pin.IN, Pin.PULL_UP)
 
         self.switch.irq(trigger=Pin.IRQ_FALLING,
                handler=self.handle_interrupt)

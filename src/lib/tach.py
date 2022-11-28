@@ -10,7 +10,7 @@ from time import ticks_diff
 from machine import Timer
 
 
-timeout=Timer(1)
+timeout=Timer(0)
 
 
 class Tach:
@@ -20,8 +20,8 @@ class Tach:
         keep speed state'''
         self.q = [5000] * queue_size
         # time deltas below this ms value trigger hi speed state 
-        self.HI_SPEED_THRESHOLD_MS = 2000
-        self.HI_SPEED_TIMEOUT_MS = 3000
+        self.HI_SPEED_THRESHOLD_MS = 327 # 15 mph
+        self.HI_SPEED_TIMEOUT_MS = 700
         self.hi_speed = False
         self.prev_pulse = ticks_ms()
         self.this_pulse = 0
@@ -34,11 +34,13 @@ class Tach:
         Flag will expire after timeout period'''
         self.hi_speed = (self.rate < self.HI_SPEED_THRESHOLD_MS)
         # set timeout on hi-speed state
-        if self.hi_speed:
-            # print('timeout_set')
-            timeout.init(period=self.HI_SPEED_TIMEOUT_MS,
-                         mode=Timer.ONE_SHOT,
-                         callback=self.hi_speed_timeout)
+        if self.hi_speed: self.set_timer()
+
+    def set_timer(self):
+        print('timeout_set')
+        timeout.init(period=self.HI_SPEED_TIMEOUT_MS,
+                        mode=Timer.ONE_SHOT,
+                        callback=self.hi_speed_timeout)
 
     def hi_speed_timeout(self,t):
         self.hi_speed = False
@@ -68,6 +70,8 @@ class Tach:
 
 
     def tic(self):
+        ''' record sensor event - calculate new sensor rate 
+        - and set the hi_speed state variable'''
         self.take_record(self.calc_period())
         self.calc_rate()
         self.set_state()
@@ -81,6 +85,7 @@ class Tach:
             # "queue": self.q
             }
         print(d)
+        print(self.__dict__)
 
 
 
