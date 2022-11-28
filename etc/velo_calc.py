@@ -20,7 +20,7 @@ accept intterupts in at least
 120 ms
 '''
 
-print(T_2_mph(0.12))
+print(T_2_mph(0.125))
 
 print(mph_2_T(40))
 
