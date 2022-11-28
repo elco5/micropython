@@ -1,5 +1,5 @@
 
-
+from machine import WDT
 from machine import Pin
 from time import sleep_ms
 
@@ -14,19 +14,20 @@ PULSER_PIN = 2
 SWITCH_PIN = 25
 SLEEP_TIME_MS = 300
 
+# wdt = WDT(timeout=2000)  # enable it with a timeout of 2s
 led = Pin(LED_PIN, Pin.OUT)
 state_led = Pin(STATE_LED_PIN, Pin.OUT)
 pulser = pulser.Pulser(PULSER_PIN=PULSER_PIN)
 reed_switch = reed_switch.ReedSwitch(SWITCH_PIN=SWITCH_PIN)
-
 tach = tach.Tach()
 # state_machine = state_machine.StateMachine()
 
 hack_mode = False
-
-
 verbose = True
+
+
 while True:
+    # wdt.feed()
 
     if reed_switch.closed:
         
@@ -47,8 +48,9 @@ while True:
         '''state transitions'''
         
 
+    # transition from pass to hack
     if not hack_mode and tach.hi_speed:
-        # transition from pass to hack
+    
         hack_mode = tach.hi_speed
         pulser.start_periodic()
         
@@ -56,8 +58,9 @@ while True:
         print('we hackin!')
 
 
+    # transition from hack to pass
     if hack_mode and not tach.hi_speed:
-        # transition from hack to pass
+    
         hack_mode = tach.hi_speed
         pulser.stop_periodic()
 
@@ -69,9 +72,4 @@ while True:
         # loop_time_end = ticks_ms()
         # print('loop_time', ticks_diff(loop_time_end, loop_time_begin))
 
-    # if not tach.hi_speed:
-    #     pulser.pass_pulse()
-    #     pass # pass the pulse
-    # else:
-    #     # high speed state == True
-    #     pass # 16 mph pulse
+ 

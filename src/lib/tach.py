@@ -35,7 +35,7 @@ class Tach:
         self.hi_speed = (self.rate < self.HI_SPEED_THRESHOLD_MS)
         # set timeout on hi-speed state
         if self.hi_speed:
-            print('timeout_set')
+            # print('timeout_set')
             timeout.init(period=self.HI_SPEED_TIMEOUT_MS,
                          mode=Timer.ONE_SHOT,
                          callback=self.hi_speed_timeout)
