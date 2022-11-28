@@ -5,44 +5,44 @@ from machine import Timer
 
 class Pulser:
 
-    PULSER_PIN = 32
+
     # tim1 = Timer(1)
     tim2 = Timer(2)
     tim3 = Timer(3)
 
 
-    def __init__(self):
 
-        self.pin = Pin(Pulser.PULSER_PIN, Pin.OUT)
+    def __init__(self, PULSER_PIN=32):
 
-        # self.tim1 = Pulser.tim1.init(period=5000, mode=Timer.PERIODIC,
-        #     callback=lambda t:print("Welcome to Microcontrollerslab"))
+        self.PERIODIC_INTERVAL_MS = 327 # 15mph
+        self.ON_TIME_MS = 20
+        self.pulser_pin = Pin(PULSER_PIN, Pin.OUT)
+  
+    def pin_off(self,t):
+        self.pulser_pin.value(0)
+
+
+    def pin_on(self,t):
+        '''callack to turn pin on for 100 ms'''
+        self.pulser_pin.value(1)
+        Pulser.tim3.init(period=self.ON_TIME_MS, mode=Timer.ONE_SHOT, callback=self.pin_off)
+
 
     def pass_pulse(self):
-
-        self.pin.value(1)
-        Pulser.tim3.init(period=100, mode=Timer.ONE_SHOT, callback=self.pulser_off)
+        '''non - callack to turn pin on for 100 ms'''
+        self.pulser_pin.value(1)
+        Pulser.tim3.init(period=self.ON_TIME_MS, mode=Timer.ONE_SHOT, callback=self.pin_off)
         print('pulse passed')
 
-    def hack_speed(self):
-        self.start()       
 
-
-    def pulser_off(self,t):
-        self.pin.value(0)
-        # print('pin off')
-
-    def pulser_on(self,t):
-        self.pin.value(1)
-        Pulser.tim3.init(period=100, mode=Timer.ONE_SHOT, callback=self.pulser_off)
-        # print('pin on')
-
-    def start(self):
-        Pulser.tim2.init(period=1000, mode=Timer.PERIODIC, callback=self.pulser_on)
+    def start_periodic(self):
+        Pulser.tim2.init(period=self.PERIODIC_INTERVAL_MS, mode=Timer.PERIODIC, callback=self.pin_on)
         print('pulser started')
 
-    def stop(self):
+
+    def stop_periodic(self):
         Pulser.tim2.deinit()
+        self.pulser_pin.value(0)
 
 '''
 >>> import pulser as p
