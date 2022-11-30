@@ -21,7 +21,7 @@ state_led = Pin(STATE_LED_PIN, Pin.OUT)
 pulser = pulser.Pulser(PULSER_PIN=PULSER_PIN)
 reed_switch = reed_switch.ReedSwitch(SENSOR_PIN=SENSOR_PIN)
 tach = tach.Tach()
-disp = display.Display()
+# disp = display.Display()
 # state_machine = state_machine.StateMachine()
 
 hack_mode = False
@@ -44,9 +44,9 @@ while True:
         '''pass pulse here if in passing mode '''
         if not hack_mode: pulser.pass_pulse()
         
-        ''' display stuff '''
-        disp.oled.show()
-        disp.show_number(tach.period)
+        # ''' display stuff '''
+        # disp.oled.show()
+        # disp.show_number(tach.period)
         
         sleep_ms(SLEEP_TIME_MS)
         reed_switch.reset()
