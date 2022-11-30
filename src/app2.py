@@ -75,7 +75,7 @@ while True:
         hack_mode = False
         state_led.value(0)
 
-        print('passin...')
+        print('passing...')
 
     sleep_ms(100)
 
