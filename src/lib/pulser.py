@@ -2,6 +2,8 @@
 
 from machine import Pin
 from machine import Timer
+from time import sleep_ms
+
 
 class Pulser:
 
@@ -36,6 +38,8 @@ class Pulser:
 
 
     def start_periodic(self):
+        sleep_ms(280)
+        print('delay 280 ms')
         Pulser.tim2.init(period=self.PERIODIC_INTERVAL_MS, mode=Timer.PERIODIC, callback=self.pin_on)
         print('pulser started')
 

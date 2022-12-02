@@ -28,7 +28,7 @@ hack_mode = False
 state_led.value(0)
 verbose = True
 
-
+print('starting sensor scan loop...')
 while True:
     # wdt.feed()
 
@@ -60,7 +60,7 @@ while True:
 
     # transition from pass to hack
     if not hack_mode and tach.hi_speed:
-    
+        print()
         pulser.start_periodic()
         hack_mode = True
         state_led.value(1)
