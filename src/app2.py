@@ -77,7 +77,7 @@ while True:
 
         print('passing...')
 
-    sleep_ms(100)
+    # sleep_ms(100)
 
         # loop_time_end = ticks_ms()
         # print('loop_time', ticks_diff(loop_time_end, loop_time_begin))

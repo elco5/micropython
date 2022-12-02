@@ -81,11 +81,11 @@ class Tach:
         d = {
             "rate": self.rate,
             "period": self.period,
-            "hi_speed_state": self.hi_speed
-            # "queue": self.q
+            "hi_speed_state": self.hi_speed,
+            "queue": self.q
             }
         print(d)
-        print(self.__dict__)
+        # print(self.__dict__)
 
 
 
