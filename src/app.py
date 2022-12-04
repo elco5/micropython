@@ -1,6 +1,9 @@
 
 from machine import WDT
 from machine import Pin
+
+from time import ticks_ms
+from time import ticks_diff
 from time import sleep_ms
 
 from lib import display
@@ -13,7 +16,7 @@ LED_PIN = 2
 STATE_LED_PIN = 5
 PULSER_PIN = 32
 SENSOR_PIN = 25
-SLEEP_TIME_MS = 100 # used as debounce time
+SLEEP_TIME_MS = 20 # used as debounce time
 
 # wdt = WDT(timeout=2000)  # enable it with a timeout of 2s
 led = Pin(LED_PIN, Pin.OUT)
@@ -28,8 +31,13 @@ hack_mode = False
 state_led.value(0)
 verbose = True
 
-print('starting sensor scan loop...')
+this_loop_begin = ticks_ms()
+print('starting sensor scan loop... Time: ', this_loop_begin)
 while True:
+    now = ticks_ms()
+    period = ticks_diff(now, this_loop_begin)
+    print(period)
+    this_loop_begin = ticks_ms()
     # wdt.feed()
 
     if reed_switch.closed:
@@ -58,26 +66,26 @@ while True:
         '''state transitions'''
         
 
-    # # transition from pass to hack
-    # if not hack_mode and tach.hi_speed:
-    #     print()
-    #     pulser.start_periodic()
-    #     hack_mode = True
-    #     state_led.value(1)
+    # transition from pass to hack
+    if not hack_mode and tach.hi_speed:
+        print()
+        pulser.start_periodic()
+        hack_mode = True
+        state_led.value(1)
 
-    #     print('hackin!')
+        print('hackin!')
 
 
-    # # transition from hack to pass
-    # if hack_mode and not tach.hi_speed:
+    # transition from hack to pass
+    if hack_mode and not tach.hi_speed:
     
-    #     pulser.stop_periodic()
-    #     hack_mode = False
-    #     state_led.value(0)
+        pulser.stop_periodic()
+        hack_mode = False
+        state_led.value(0)
 
-    #     print('passing...')
+        print('passing...')
 
-    # sleep_ms(100)
+    sleep_ms(5)
 
         # loop_time_end = ticks_ms()
         # print('loop_time', ticks_diff(loop_time_end, loop_time_begin))        
