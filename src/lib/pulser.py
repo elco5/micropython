@@ -34,19 +34,19 @@ class Pulser:
         '''non - callack to turn pin on for 100 ms'''
         self.pulser_pin.value(1)
         Pulser.tim3.init(period=self.ON_TIME_MS, mode=Timer.ONE_SHOT, callback=self.pin_off)
-        print('pulse passed')
+        # print('pulse passed')
 
 
     def start_periodic(self):
-        sleep_ms(280)
-        print('delay 280 ms')
+        # sleep_ms(280)
+        # print('delay 280 ms')
         Pulser.tim2.init(period=self.PERIODIC_INTERVAL_MS, mode=Timer.PERIODIC, callback=self.pin_on)
         print('pulser started')
 
 
     def stop_periodic(self):
         Pulser.tim2.deinit()
-        self.pulser_pin.value(0)
+        # self.pulser_pin.value(0)
 
 '''
 >>> import pulser as p

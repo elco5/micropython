@@ -9,6 +9,9 @@ from time import ticks_ms
 from time import ticks_diff
 from machine import Timer
 
+from fifo_buffer import FIFOBuffer
+from velo_calc import T_2_mph
+
 
 timeout=Timer(0)
 
@@ -19,32 +22,38 @@ class Tach:
         '''define time queue and track average
         keep speed state'''
         self.q = [5000] * queue_size
-        # time deltas below this ms value trigger hi speed state 
+        self.buf = FIFOBuffer(size = 8)
+
         self.HI_SPEED_THRESHOLD_MS = 327 # 15 mph
         self.HI_SPEED_TIMEOUT_MS = 700
         self.hi_speed = False
         self.prev_pulse = ticks_ms()
         self.this_pulse = 0
         self.period = 0
-        self.rate = 0
+        self.ave = 0
 
 
     def set_state(self):
-        '''Flag to indicate speed is higher than threshold.
-        Flag will expire after timeout period'''
-        self.hi_speed = (self.rate < self.HI_SPEED_THRESHOLD_MS)
-        # set timeout on hi-speed state
+        
+        '''Add truth value of period being less than threshold'''
+        self.buf.add_val(self.ave < self.HI_SPEED_THRESHOLD_MS)
+        
+        '''Flag to indicate speed is higher than threshold.'''
+        self.hi_speed = self.buf.is_true()
+
+        '''Flag will expire after timeout period'''
         if self.hi_speed: self.set_timer()
 
+
     def set_timer(self):
-        print('timeout_set')
+        # print('timeout_set')
         timeout.init(period=self.HI_SPEED_TIMEOUT_MS,
                         mode=Timer.ONE_SHOT,
                         callback=self.hi_speed_timeout)
 
     def hi_speed_timeout(self,t):
         self.hi_speed = False
-        print('hi_speed_timeout expired!')
+        # print('hi_speed_timeout expired!')
 
 
     def take_record(self, now_ms):
@@ -58,7 +67,7 @@ class Tach:
         time_sum = 0
         for delt in self.q:
             time_sum += delt
-        self.rate = int(time_sum/len(self.q))
+        self.ave = int(time_sum/len(self.q))
 
 
     def calc_period(self):
@@ -79,13 +88,14 @@ class Tach:
 
     def show(self):
         d = {
-            "rate": self.rate,
+            "ave": self.ave,
             "period": self.period,
-            "hi_speed_state": self.hi_speed
+            "hi_speed_state": self.hi_speed,
+            "MPH": T_2_mph(self.ave)
             # "queue": self.q
             }
-        print(d)
-        print(self.__dict__)
+        print(ticks_ms(),':  ', d)
+        # print(self.__dict__)
 
 
 
