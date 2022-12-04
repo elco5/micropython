@@ -1,18 +1,18 @@
 
-import numpy as np
-pi = np.pi
+import math
+pi = math.pi
 
 
 def mph_2_T(mph):
     d = 0.7
     v_ms = mph/2.23694
-    return np.round((pi*d)/v_ms,3)
+    return ((pi*d)/v_ms,3)
 
 
 def T_2_mph(T):
     d = 0.7
     v = (pi*d)/T
-    return np.round(v*2.23694,3)
+    return (v*2.23694,3)
     
 
 ''' conclusion: sample switch and 

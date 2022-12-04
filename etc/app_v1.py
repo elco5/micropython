@@ -16,16 +16,15 @@ LED_PIN = 2
 STATE_LED_PIN = 5
 PULSER_PIN = 32
 SENSOR_PIN = 25
-SLEEP_TIME_MS = 20 # used as debounce time
+SENSOR_REST = 20 # used as debounce time
 
 # wdt = WDT(timeout=2000)  # enable it with a timeout of 2s
-sens_led = Pin(LED_PIN, Pin.OUT)
-state_led = Pin(STATE_LED_PIN, Pin.OUT, drive=Pin.DRIVE_3)
+led = Pin(LED_PIN, Pin.OUT)
+state_led = Pin(STATE_LED_PIN, Pin.OUT)
 pulser = pulser.Pulser(PULSER_PIN=PULSER_PIN)
 reed_switch = reed_switch.ReedSwitch(SENSOR_PIN=SENSOR_PIN)
 tach = tach.Tach()
-# disp = display.Display()
-# state_machine = state_machine.StateMachine()
+
 
 hack_mode = False
 state_led.value(0)
@@ -33,27 +32,34 @@ verbose = True
 
 this_loop_begin = ticks_ms()
 print('starting sensor scan loop... Time: ', this_loop_begin)
+
 while True:
     now = ticks_ms()
     period = ticks_diff(now, this_loop_begin)
-    # print(period)
     this_loop_begin = ticks_ms()
-    # wdt.feed()
+    # print(period)
 
     if reed_switch.closed:
-
-        sens_led.on()
+        
+        # loop_time_begin = ticks_ms()
+        # do things each switch closure
+        led.value(1)
         
         tach.tic()
+
 
         '''pass pulse here if in passing mode '''
         if not hack_mode: pulser.pass_pulse()
         
+        # ''' display stuff '''
+        # disp.oled.show()
+        # disp.show_number(tach.period)
         
-        sleep_ms(SLEEP_TIME_MS)
+        sleep_ms(SENSOR_REST)
+        
         reed_switch.reset()
 
-        sens_led.off()
+        led.value(0)
         if verbose: tach.show()
 
 
@@ -62,17 +68,21 @@ while True:
 
     # transition from pass to hack
     if not hack_mode and tach.hi_speed:
-        hack_mode = True
-        state_led.on()
+        print()
         pulser.start_periodic()
+        hack_mode = True
+        state_led.value(1)
+
         print('hackin!')
 
 
     # transition from hack to pass
     if hack_mode and not tach.hi_speed:
-        hack_mode = False
-        state_led.off()
+    
         pulser.stop_periodic()
+        hack_mode = False
+        state_led.value(0)
+
         print('passing...')
 
     sleep_ms(5)
