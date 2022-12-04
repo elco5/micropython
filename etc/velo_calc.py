@@ -24,7 +24,7 @@ print(f'bike is restricted to 19 mph. interval: {mph_2_T(19)}')
 # 19mph -> 259 ms
 print(f'hack the sensor so bike thinks it is going 15 mph. interval: {mph_2_T(15)}') 
 # 15mph -> 328 ms
-
+print(T_2_mph(0.180))
 
 
 
