@@ -16,7 +16,7 @@ LED_PIN = 2
 STATE_LED_PIN = 5
 PULSER_PIN = 32
 SENSOR_PIN = 25
-SLEEP_TIME_MS = 20 # used as debounce time
+SLEEP_TIME_MS = 80 # used as debounce time
 
 # wdt = WDT(timeout=2000)  # enable it with a timeout of 2s
 sens_led = Pin(LED_PIN, Pin.OUT)
