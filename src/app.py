@@ -33,10 +33,10 @@ verbose = True
 
 this_loop_begin = ticks_ms()
 print('starting sensor scan loop... Time: ', this_loop_begin)
+
 while True:
-    now = ticks_ms()
-    period = ticks_diff(now, this_loop_begin)
-    # print(period)
+
+    period = ticks_diff(ticks_ms(), this_loop_begin)
     this_loop_begin = ticks_ms()
     # wdt.feed()
 
