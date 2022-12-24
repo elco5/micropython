@@ -35,14 +35,22 @@ verbose = True
 
 this_loop_begin = ticks_ms()
 
-async def loop_1(evt):
+def switch_close_duties():
+    # tach.tic()
+    # if not hack_mode: 
+    pulser.pass_pulse()
+    # if verbose: tach.show()
+
+async def switch_close_event(evt):
     while True:
         evt.clear()  # re-enable the event
         await evt.wait()  # minimal resources used while paused
-        print("Switch closed.")   
+        print("Switch closed.")
+        switch_close_duties()
+           
 
 async def main_loop():
-    await loop_1(sw.close)
+    await switch_close_event(sw.close)
 
 asyncio.run(main_loop())
 
