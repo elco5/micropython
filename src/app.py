@@ -5,8 +5,8 @@ from machine import Pin
 from time import ticks_ms
 from time import ticks_diff
 from time import sleep_ms
-
 from lib import display
+
 from lib import tach
 from lib import pulser
 from lib import reed_switch
@@ -24,6 +24,7 @@ state_led = Pin(STATE_LED_PIN, Pin.OUT, drive=Pin.DRIVE_3)
 pulser = pulser.Pulser(PULSER_PIN=PULSER_PIN)
 reed_switch = reed_switch.ReedSwitch(SENSOR_PIN=SENSOR_PIN)
 tach = tach.Tach()
+
 # disp = display.Display()
 # state_machine = state_machine.StateMachine()
 
@@ -56,12 +57,12 @@ while True:
         sens_led.off()
         if verbose: tach.show()
 
-
         '''state transitions'''
-        
+
 
     # transition from pass to hack
     if not hack_mode and tach.hi_speed:
+        # if pulser.pulse_on and reed_switch.closed:
         hack_mode = True
         state_led.on()
         pulser.start_periodic()
@@ -70,10 +71,12 @@ while True:
 
     # transition from hack to pass
     if hack_mode and not tach.hi_speed:
+        # if pulser.pulse_on and reed_switch.closed:
         hack_mode = False
         state_led.off()
         pulser.stop_periodic()
         print('passing...')
+
 
     sleep_ms(5)
 

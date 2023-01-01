@@ -13,26 +13,30 @@ class Pulser:
     tim3 = Timer(3)
 
 
-
     def __init__(self, PULSER_PIN=32):
 
         self.PERIODIC_INTERVAL_MS = 327 # 15mph
         self.ON_TIME_MS = 20
         self.pulser_pin = Pin(PULSER_PIN, Pin.OUT)
+        self.pulse_on = True
   
+
     def pin_off(self,t):
         self.pulser_pin.value(0)
+        self.pulse_on = True
 
 
     def pin_on(self,t):
         '''callack to turn pin on for 100 ms'''
         self.pulser_pin.value(1)
+        self.pulse_on = True
         Pulser.tim3.init(period=self.ON_TIME_MS, mode=Timer.ONE_SHOT, callback=self.pin_off)
 
 
     def pass_pulse(self):
         '''non - callack to turn pin on for 100 ms'''
         self.pulser_pin.value(1)
+        self.pulse_on = True
         Pulser.tim3.init(period=self.ON_TIME_MS, mode=Timer.ONE_SHOT, callback=self.pin_off)
         # print('pulse passed')
 

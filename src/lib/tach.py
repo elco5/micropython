@@ -22,7 +22,7 @@ class Tach:
         '''define time queue and track average
         keep speed state'''
         self.q = [5000] * queue_size
-        self.buf = FIFOBuffer(size = 8)
+        self.buf = FIFOBuffer(size = 2)
 
         self.HI_SPEED_THRESHOLD_MS = 327 # 15 mph
         self.HI_SPEED_TIMEOUT_MS = 700
